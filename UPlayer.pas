@@ -23,7 +23,8 @@ public
     function  HandToStr():string;
     function  numCards(): integer;
     procedure AddCard(Acard:TCard);
-    function  RemoveCard(Acard:TCard): Boolean;
+    function  RemoveCard(Acard:TCard): Boolean;   // deletes card from players Lists
+    function  GetCard(index:integer):TCard;        // doesn't remove card
     function  GetCardIndex(Acard:TCard): integer;   //returns index number of card (-1 of not present)
     procedure SortSuits();
 
@@ -88,7 +89,12 @@ procedure TPLayer.AddCard(Acard:TCard);
 
 
 
- function TPLayer.GetCardIndex(Acard:TCard): integer;     //can't use Tlist<>.contains as does binary compare
+ function TPLayer.GetCard(index: integer): TCard;
+begin
+   result:= FCardsInHand[index];
+end;
+
+function TPLayer.GetCardIndex(Acard:TCard): integer;     //can't use Tlist<>.contains as does binary compare
   var                                                     //returnes index number if present, otherwise -1
   i:integer;
   begin
