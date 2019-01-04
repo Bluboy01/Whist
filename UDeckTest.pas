@@ -27,7 +27,6 @@ begin
   readln;
   testDeck.ShuffleDeck;
   writeln ('deck has been shuffled');
-  readln;
   testDeck.DeckPrint;
   writeln('there are ', testDeck.GetCardsLeft, 'cards left - should be 52');
   readln;
@@ -37,6 +36,8 @@ begin
   Writeln('The next top card is ', card.TCardToStr);
   writeln('there are ', testDeck.GetCardsLeft, 'cards left - should be 50');
   readln;
+  card:=testDeck.RemoveRandomCard;
+  Writeln('The random card is ', card.TCardToStr);
   writeln('there are ', testDeck.GetCardsLeft, 'cards left - should be 49');
   readln;
   writeln ('The pack is now');

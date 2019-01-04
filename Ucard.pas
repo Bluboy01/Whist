@@ -20,8 +20,6 @@ public
     constructor Create(Arank:integer;Asuit:Tsuit);
     function GetSuit() : TSuit;
     function GetRank() : integer;
-    procedure SetSuit(Asuit:TSuit);
-    procedure SetRank(Arank:integer);
     function TCardToStr():string;
     function TSuitToStr(): string;
     function RankToStr(): string;
@@ -41,21 +39,12 @@ implementation
     end;
 
 
-    procedure TCard.SetRank(Arank:integer) ;
-    begin
-      Frank:=Arank;
-    end;
-
-    procedure TCard.SetSuit(Asuit: Tsuit) ;
-    begin
-      Fsuit:=Asuit;
-    end;
-
-
     function TCard.GetRank(): integer;
     begin
       result:=Frank;
     end;
+
+
 
     function TCard.TCardToStr(): string;
     var

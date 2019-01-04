@@ -12,15 +12,12 @@ type
 
    TGame = class   abstract
 
-
-
 private
    var
    FgameDeck: TDeck;
    FplayerArray: array of TPLayer;
    FnumPlayers: integer;
    FhandSize: integer;
-
 
   public
     constructor Create(AnumPlayers:integer; AcardsPerPlayer:integer);
@@ -29,10 +26,6 @@ private
     function DeckToStr(): string;
     procedure DealAllCards();
     function getNumPlayers():integer;
-    function getPlayerHand(playerNumber:integer):TCardList;
-    function getPlayerCardsInHand(playerNumber:integer):integer;
-    function getPlayerCard(playerNumber:integer;cardIndex:integer):TCard;
-
 
   end;
 
@@ -84,23 +77,6 @@ function TGame.getNumPlayers(): integer;
 begin
   result:=FnumPlayers;
 end;
-
-
-function TGame.getPlayerCard(playerNumber, cardIndex: integer): TCard;
-begin
-  result:=FPlayerArray[playerNumber];
-end;
-
-function TGame.getPlayerCardsInHand(playerNumber: integer): integer;
-begin
- result:=FPlayerArray[playerNumber].numCards;
-end;
-
-function TGame.getPlayerHand(playerNumber: integer): TCardList;
-begin
- result:=FPlayerArray[playerNumber];
-end;
-
 
 function TGame.PlayerHandToStr(playerNumber:integer):string;
   begin

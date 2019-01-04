@@ -20,6 +20,7 @@ var
     function DealTopCard():TCard;
     procedure DeckPrint();
     function GetCardsLeft():integer;
+    function RemoveRandomCard(): TCard;  //returns a random card from the deck
     function DeckToStr():string;
 end;
 
@@ -97,6 +98,16 @@ procedure TDeck.ShuffleDeck();
       result:= Fcardsleft;
     end;
 
+  function TDeck.RemoveRandomCard(): UCard.TCard;
+  var
+  randomNum: integer;
+        begin
+         randomize;
+         randomNum:= trunc(random(Fcardsleft));         //move random cards into a new deck
+         result:=  Fdeck.items[randomNum];
+         FDeck.Remove(result);
+         Dec(Fcardsleft);
+        end;
 
 end.
 
