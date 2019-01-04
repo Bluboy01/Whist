@@ -11,10 +11,26 @@ uses
 type
 
   TBoard = class(TForm)
+
+   NextDeal: TButton;
+  type TCardList = TObjectList<TCard>;
+  const
+   NORTHX = 100;
+   NORTHY = 200;
+   EASTX = 200;
+   EASTY = 100;
+   SOUTHX = 100;
+   SOUTHY = 10;
+   WESTX = 10;
+   WESTY = 100;
+   SPACING = 20;  //increment bewtween cards on screen - controls overlap
+
+
+
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-
+    FGame: TGame;
     North, South, East, West: TPlayer;
     CardImages:TList<TImage>;
     procedure DrawCard(Card: TCard; x,y: integer);
@@ -39,6 +55,45 @@ procedure TBoard.UpdateUI();
 begin
 
 end;
+
+
+
+procedure TBoard.NextDealClick(Sender: TObject);
+var
+player, cardIndex, xPos, yPos: integer;
+
+begin
+  FGame:= TGame.Create();
+  for player := 0 to 3 do
+    case player of                       //get appropriate xy co-ordinates
+    0: begin                              // for each player's hand
+        xPos:= NORTHX;
+        yPos:= NORTHY;
+       end;
+    1: begin
+        xPos:= EASTX ;
+        yPos:= EASTY ;
+       end;
+    2: begin
+        xPos:= SOUTHX;
+        yPos:= SOUTHY;
+       end;
+    3: begin
+        xPos:= WESTX;
+        yPos:= WESTY;
+       end;
+    end;
+
+  //show all players cards on screen
+  for cardIndex := 0 to FGame.getPlayerCardsInHand(player)-1 do
+    begin
+      Drawcard (FGame.getPlayerCard(player, cardIndex),xPos+cardindex*SPACING, yPos);  //show card on screen
+    end;
+
+end;
+
+
+
 
 procedure TBoard.DrawCard(Card: TCard; x,y: integer);
 //draws Card at (x,y)
