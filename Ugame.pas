@@ -4,14 +4,13 @@ unit Ugame;
 interface
 
 uses
-  Classes, SysUtils, UDeck, UPlayer, UCard, UDeck, System.Generics.Collections;
+  Classes, SysUtils, UDeck, UPlayer;
 
 type
 
    { TGame }
 
-   TGame = class
-type TCardList = TObjectList<TCard>;
+   TGame = class   abstract
 
 private
    var
@@ -27,7 +26,6 @@ private
     function DeckToStr(): string;
     procedure DealAllCards();
     function getNumPlayers():integer;
-    function getPlayerHand(playerNumber:integer):TCardList;
 
   end;
 
@@ -69,7 +67,7 @@ begin
         begin
            for playerIndex:=0 to FnumPlayers-1 do
            begin
-             TPlayer(FplayerArray[playerIndex]).AddCard(FgameDeck.removeTopCard());
+             TPlayer(FplayerArray[playerIndex]).AddCard(FgameDeck.DealTopCard());
            end;
         end;
 end;
@@ -78,11 +76,6 @@ end;
 function TGame.getNumPlayers(): integer;
 begin
   result:=FnumPlayers;
-end;
-
-function TGame.getPlayerHand(playerNumber: integer): TCardList;
-begin
- result:=FPlayerArray[playerNumber];
 end;
 
 function TGame.PlayerHandToStr(playerNumber:integer):string;

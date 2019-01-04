@@ -11,11 +11,8 @@ uses
 type
 
   TBoard = class(TForm)
-    NextDeal: TButton;
-    type TCardList = TObjectList<TCard>;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure NextDealClick(Sender: TObject);
   private
 
     North, South, East, West: TPlayer;
@@ -40,20 +37,6 @@ implementation
 
 procedure TBoard.UpdateUI();
 begin
-
-end;
-
-procedure TBoard.NextDealClick(Sender: TObject);
-var
-player, cardIndex: integer;
-
-begin
-for player := 0 to 3 do
-
-  begin
-    for cardIndex := 0 to High do
-
-  end;
 
 end;
 
