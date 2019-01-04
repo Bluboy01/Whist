@@ -2,20 +2,20 @@ unit UPlayer;
 
 interface
 
-uses Classes, SysUtils, Udeck, UCard, System.Generics.Collections;
+uses Classes, SysUtils, Udeck, UCard, System.Generics.Collections, System.Generics.Defaults;
 
 
 type TPLayer = class
+type TCardList = TObjectlist<TCard>;
 type TListSortCompare = function (Item1, Item2: Pointer): Integer;
-type TCardList = TObjectList<TCard>;
 
 
 
 private
     FcardsInHand : TCardList;            //dynamic array to hold all cards in hand
-    FsuitListArray: Array [0..3] of TCardList;    //each list holds a suit, tracks FcardsInhand
+    FsuitListArray: Array [0..3] of TCardList;    //each list holds a suit, tracks
     class function  CompareRanks(ACard,BCard:pointer): integer;
-    procedure UpdateSuitLists();
+
 
 public
     constructor Create();
@@ -27,6 +27,8 @@ public
     function  GetCard(index:integer):TCard;        // doesn't remove card
     function  GetCardIndex(Acard:TCard): integer;   //returns index number of card (-1 of not present)
     procedure SortSuits();
+    procedure PrintSuitLists();
+    procedure UpdateSuitLists();
 
 
 end;
@@ -40,6 +42,7 @@ constructor TPLayer.Create();        (* Creates a hand with no cards in it *)
     FcardsInHand:= TcardList.create();
     for suitIndex:= 0 to 3 do FsuitListArray[suitIndex]:= TCardList.Create();    //construct the suit lists
   end;
+
 
 class function  TPlayer.CompareRanks(ACard,BCard:pointer): integer;    //used by TList sort method
  begin
@@ -110,17 +113,31 @@ function TPLayer.GetCardIndex(Acard:TCard): integer;     //can't use Tlist<>.con
 
 
  procedure TPlayer.UpdateSuitLists() ;                  //TODO write sort hand procedure
+   var
+   handIndex,suitIndex: integer;
+
+   begin
+       for handIndex := 0 to numCards()-1 do               //loop through the whole hand
+         begin
+            for suitIndex:=  0  to 3 do                    // checking each suit
+              if (FcardsInHand[handIndex].GetSuit()= Tsuit(suitIndex))then
+                    FsuitListArray[suitIndex].Add(FcardsInHand[handIndex]);      //add adding cards to correct suitList
+         end;                                                   // sort each suit list and recombine
+  end;
+
+procedure TPlayer.PrintSuitLists();
  var
- handIndex,suitIndex: integer;
- FsuitListArray: Array [0..3] of TCardList;    //each list holds a suit
+  cardIndex,suitIndex: integer;
  begin
-     for handIndex := 0 to numCards()-1 do               //loop through the whole hand
        begin
           for suitIndex:=  0  to 3 do                    // checking each suit
-            if (FcardsInHand[handIndex].GetSuit()= Tsuit(suitIndex))then
-                  FsuitListArray[suitIndex].Add(FcardsInHand[handIndex]);      //add adding cards to correct suitList
-       end;                                                   // sort each suit list and recombine
+            begin
+              for cardIndex := 0 to FsuitListArray[suitIndex].count-1 do
+                   writeln(FsuitListArray[suitIndex].items[cardIndex].TcardToStr);
+            end;
+       end;
 end;
+
 
 procedure Tplayer.SortSuits();
 var
@@ -128,7 +145,13 @@ suitIndex:integer;
 begin
   for suitIndex:= 0  to 3 do
   begin
-     FsuitListArray[suitIndex].sort(CompareRanks);
+     FsuitListArray[suitIndex].sort(                          //sort on rank using a comparer function
+     TComparer<TCard>.Construct(
+      function(const ACard,BCard: TCard): Integer
+      begin
+        Result := ACard.GetRank - BCard.GetRank;
+      end
+     ) )
   end;
 end;
 

@@ -11,7 +11,8 @@ uses
 type
 
   TBoard = class(TForm)
-    NextDeal: TButton;
+
+   NextDeal: TButton;
   type TCardList = TObjectList<TCard>;
   const
    NORTHX = 100;
@@ -25,9 +26,9 @@ type
    SPACING = 20;  //increment bewtween cards on screen - controls overlap
 
 
+
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure NextDealClick(Sender: TObject);
   private
     FGame: TGame;
     North, South, East, West: TPlayer;
@@ -54,6 +55,8 @@ procedure TBoard.UpdateUI();
 begin
 
 end;
+
+
 
 procedure TBoard.NextDealClick(Sender: TObject);
 var
@@ -88,6 +91,7 @@ begin
     end;
 
 end;
+
 
 
 

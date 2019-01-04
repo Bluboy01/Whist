@@ -4,22 +4,22 @@ interface
 
 uses  CLasses, SysUtils, Ucard, System.Generics.Collections ;
 
-type
-TDeck = class
+Type TDeck = class
 type TCardList = TObjectList<TCard>;
+
 
 var
   private
     Fdeck : TCardList;    // The cards in the hand
     Fcardsleft: integer;
+    FTopCardIndex: integer;
 
   public
     constructor Create();
     procedure ShuffleDeck();
-    function removeTopCard():TCard;
+    function DealTopCard():TCard;
     procedure DeckPrint();
     function GetCardsLeft():integer;
-    function RemoveRandomCard(): TCard;  //returns a random card from the deck
     function DeckToStr():string;
 end;
 
@@ -35,6 +35,7 @@ constructor TDeck.Create();
   begin
     deckIndex:= 0;
      FDeck:=TCardList.create();
+     FDeck.Capacity:= 52;
     For suitNum:= 0 to 3 Do
     begin
       For rank:=1 to 13  Do
@@ -45,41 +46,27 @@ constructor TDeck.Create();
        end;
     end;
   Fcardsleft:=52;
+  FTopCardIndex:=0
   end;
 
 
                                               //full pack
-    procedure TDeck.ShuffleDeck();
+procedure TDeck.ShuffleDeck();
     var
     shuffledDeck: TCardList;
-    nextCard: TCard;
-    shuffleCount,randomNum: integer;
+    nextCard, card:TCard;
+    i: integer;
     begin
-
-      shuffledDeck:=TCardList.Create;      //Create a deck to use as an intermediary
-      //Uses Fisher-Taylor algorithm to shuffle
       randomize;
-      For shuffleCount:=51 downto 0 do
-       begin
-         randomNum:= trunc(random(shuffleCount));
-         nextCard:= FDeck.items[randomNum];
-         FDeck.Remove(nextCard);     //
-         shuffledDeck.Add(nextCard);     //move random cards into a new deck
-       end;
-         //copy shuffled deck back to main deck
-       For shuffleCount:=0 to 51 do
-          begin
-            Fdeck:=shuffledDeck;
-          end;
-
-       Fcardsleft:=52;    //still a full pack
+      for i := 0 to Fdeck.Count-1 do
+          FDeck.Exchange(i,random(FDeck.Count));
     end;
 
-  function TDeck.removeTopCard():  TCard;
+  function TDeck.DealTopCard():  TCard;
     begin
-      result:=FDeck.items[0];
-      FDeck.Remove(result);
+      result:=FDeck.items[FTopCardIndex];
       Dec(Fcardsleft);
+      Inc(FTopCardIndex);
     end;
 
   procedure TDeck.DeckPrint();
@@ -110,16 +97,6 @@ constructor TDeck.Create();
       result:= Fcardsleft;
     end;
 
-  function TDeck.RemoveRandomCard(): UCard.TCard;
-  var
-  randomNum: integer;
-        begin
-         randomize;
-         randomNum:= trunc(random(Fcardsleft));         //move random cards into a new deck
-         result:=  Fdeck.items[randomNum];
-         FDeck.Remove(result);
-         Dec(Fcardsleft);
-        end;
 
 end.
 
