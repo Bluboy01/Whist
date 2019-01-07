@@ -4,12 +4,8 @@ interface
 
 uses Classes, SysUtils, Udeck, UCard, System.Generics.Collections, System.Generics.Defaults;
 
-
+type TPosition = (North, South, East, West);
 type TPLayer = class
-
-type TListSortCompare = function (Item1, Item2: Pointer): Integer;
-
-
 
 private
     FcardsInHand : TCardList;            //dynamic array to hold all cards in hand

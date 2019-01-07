@@ -3,7 +3,7 @@ unit UIWhist;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  UGame, Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls,ExtCtrls,Generics.Collections, UGame, Ucard, UDeck, UPlayer;
 
 
@@ -62,6 +62,7 @@ end;
 procedure TBoard.NextDealClick(Sender: TObject);
 var
 player, cardIndex, xPos, yPos: integer;
+position: TPosition;
 
 begin
   FGame:= TGame.Create(4,13);
@@ -86,6 +87,8 @@ begin
     end;
 
   //show all players cards on screen
+  for player in TPosition do
+
   for cardIndex := 0 to FGame.getPlayerCardsInHand(player)-1 do
     begin
       Drawcard (FGame.getPlayerCard(player, cardIndex),xPos+cardindex*SPACING, yPos);  //show card on screen

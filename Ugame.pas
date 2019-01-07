@@ -6,10 +6,12 @@ interface
 uses
   Classes, SysUtils, UDeck, UCard, UPlayer;
 
+
 type
+   TPosition = (North, South, East, West);
 
    { TGame }
-
+type
    TGame = class   abstract
 
 private
