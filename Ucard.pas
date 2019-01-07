@@ -18,8 +18,8 @@ private
     Fsuit: TSuit;
 public
     constructor Create(Arank:integer;Asuit:Tsuit);
-    function GetSuit() : TSuit;
-    function GetRank() : integer;
+    property rank: integer read Frank;
+    property suit: TSuit read Fsuit;
     function TCardToStr():string;
     function TSuitToStr(): string;
     function RankToStr(): string;
@@ -27,26 +27,15 @@ end;
 
 implementation
 
-    constructor TCard.Create(Arank:integer;Asuit:TSuit);
+constructor TCard.Create(Arank:integer;Asuit:TSuit);
     begin
       Fsuit:=Asuit;
       Frank:=Arank;
     end;
 
-    function TCard.GetSuit(): Tsuit;
-    begin
-      result:=Fsuit;
-    end;
 
 
-    function TCard.GetRank(): integer;
-    begin
-      result:=Frank;
-    end;
-
-
-
-    function TCard.TCardToStr(): string;
+function TCard.TCardToStr(): string;
     var
       rankStr:string;
       suitNum: integer;

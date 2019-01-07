@@ -4,8 +4,9 @@ interface
 
 uses  CLasses, SysUtils, Ucard, System.Generics.Collections ;
 
-Type TDeck = class
 type TCardList = TObjectList<TCard>;
+
+Type TDeck = class
 
 
 var

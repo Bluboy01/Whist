@@ -4,7 +4,7 @@ unit Ugame;
 interface
 
 uses
-  Classes, SysUtils, UDeck, UPlayer;
+  Classes, SysUtils, UDeck, UCard, UPlayer;
 
 type
 
@@ -18,15 +18,16 @@ private
    FplayerArray: array of TPLayer;
    FnumPlayers: integer;
    FhandSize: integer;
+    function getNumPlayers: integer;
 
   public
     constructor Create(AnumPlayers:integer; AcardsPerPlayer:integer);
     procedure SortAllHandsBySuit();          //sorts cards for all players
-    function PlayerHandToStr(playerNumber:integer):string;
-    function DeckToStr(): string;
+    function  PlayerHandToStr(playerNumber:integer):string;
+    function  DeckToStr(): string;
     procedure DealAllCards();
-    function getNumPlayers():integer;
-
+    function  GetPlayerCardsInHand(playerNumber:integer):integer; //get number of cards in hand
+    function  GetPlayerCard(playerNumber:integer; cardIndex:integer):TCard;  // get the ith card
   end;
 
 implementation
@@ -76,6 +77,16 @@ end;
 function TGame.getNumPlayers(): integer;
 begin
   result:=FnumPlayers;
+end;
+
+function TGame.GetPlayerCard(playerNumber, cardIndex: integer): TCard;
+begin
+   result:= FplayerArray[playerNumber].getCard(cardIndex);
+end;
+
+function TGame.getPlayerCardsInHand(playerNumber: integer): integer;
+begin
+  result:= Tplayer(FplayerArray[playerNumber]).numCards;
 end;
 
 function TGame.PlayerHandToStr(playerNumber:integer):string;

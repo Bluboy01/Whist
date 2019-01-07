@@ -11,8 +11,7 @@ uses
   UDeck,
   UDeckTest,
   UPlayerTest,
-  UIWhist in 'UIWhist.pas' {Board},
-  UCompare in 'UCompare.pas';
+  UIWhist in 'UIWhist.pas' {Board};
 
 //UPlayer,
   //UWhistgame,

@@ -6,7 +6,7 @@ uses Classes, SysUtils, Udeck, UCard, System.Generics.Collections, System.Generi
 
 
 type TPLayer = class
-type TCardList = TObjectlist<TCard>;
+
 type TListSortCompare = function (Item1, Item2: Pointer): Integer;
 
 
@@ -20,8 +20,9 @@ private
 public
     constructor Create();
     function  GetHand() : TCardList;
+    function  GetCard(index:integer):TCard;      // returns the indexed card (zero based)
     function  HandToStr():string;
-    function  numCards(): integer;
+    function  numCards(): integer;              //number of cards in hand
     procedure AddCard(Acard:TCard);
     function  RemoveCard(Acard:TCard): Boolean;
     function  GetCardIndex(Acard:TCard): integer;   //returns index number of card (-1 of not present)
@@ -43,7 +44,7 @@ constructor TPLayer.Create();        (* Creates a hand with no cards in it *)
 
 class function  TPlayer.CompareRanks(ACard,BCard:pointer): integer;    //used by TList sort method
  begin
-    result:= TCard(ACard).GetRank - Tcard(BCard).GetRank;             //+ve if A > B, -ve if B > A 0 if equal
+    result:= TCard(ACard).rank - Tcard(BCard).rank;             //+ve if A > B, -ve if B > A 0 if equal
  end;
 
 function TPLayer.GetHand(): TCardList;
@@ -89,15 +90,20 @@ procedure TPLayer.AddCard(Acard:TCard);
 
 
 
- function TPLayer.GetCardIndex(Acard:TCard): integer;     //can't use Tlist<>.contains as does binary compare
+function TPLayer.GetCard(index: integer): TCard;
+  begin
+    result:= FcardsInHand[index];
+  end;
+
+function TPLayer.GetCardIndex(Acard:TCard): integer;     //can't use Tlist<>.contains as does binary compare
   var                                                     //returnes index number if present, otherwise -1
   i:integer;
   begin
      result:= -1;
      for i := 0 to numCards()-1 do
      begin
-        if ((FcardsInHand[i].GetSuit=ACard.GetSuit())
-            and (FcardsInHand[i].GetRank=ACard.GetRank())) then
+        if ((FcardsInHand[i].suit=ACard.suit)
+            and (FcardsInHand[i].rank = ACard.rank) )then
             result:=i;
      end;
   end;
@@ -112,7 +118,7 @@ procedure TPLayer.AddCard(Acard:TCard);
      for handIndex := 0 to numCards()-1 do               //loop through the whole hand
        begin
           for suitIndex:=  0  to 3 do                    // checking each suit
-            if (FcardsInHand[handIndex].GetSuit()= Tsuit(suitIndex))then
+            if (FcardsInHand[handIndex].suit = Tsuit(suitIndex))then
                   FsuitListArray[suitIndex].Add(FcardsInHand[handIndex]);      //add adding cards to correct suitList
        end;                                                   // sort each suit list and recombine
 end;
@@ -140,7 +146,7 @@ begin
      TComparer<TCard>.Construct(
       function(const ACard,BCard: TCard): Integer
       begin
-        Result := ACard.GetRank - BCard.GetRank;
+        Result := ACard.rank - BCard.rank;
       end
      ) )
   end;
